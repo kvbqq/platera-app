@@ -1,0 +1,29 @@
+# Maven / Java
+target/
+*.iml
+*.class
+*.log
+
+# Spring Boot
+.spring-boot-devtools.properties
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System
+.DS_Store
+Thumbs.db
+
+# Env / secrets (jeśli będą)
+.env
+*.env
+application-*.yml
+application-*.properties
