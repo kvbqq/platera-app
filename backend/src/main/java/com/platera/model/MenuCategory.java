@@ -2,38 +2,37 @@ package com.platera.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "restaurants")
+@Table(name = "menu_categories")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Restaurant {
+public class MenuCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String name;
-    private String city;
-    private String address;
-    private String description;
-
-    public void update(Restaurant restaurant) {
-        this.name = restaurant.name;
-        this.city = restaurant.city;
-        this.address = restaurant.address;
-        this.description = restaurant.description;
-    }
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<MenuItem> items;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Restaurant restaurant = (Restaurant) o;
-        return id != null && id.equals(restaurant.id);
-    }
+        MenuCategory menuCategory = (MenuCategory) o;
+        return id != null && id.equals(menuCategory.id);
+  }
 
     @Override
     public int hashCode() {
