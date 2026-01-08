@@ -4,6 +4,7 @@ import com.platera.dto.AuthResponse;
 import com.platera.dto.LoginRequest;
 import com.platera.dto.RegisterRequest;
 import com.platera.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest request) {
+    public AuthResponse register(@RequestBody @Valid RegisterRequest request) {
         return authService.register(request);
     }
 

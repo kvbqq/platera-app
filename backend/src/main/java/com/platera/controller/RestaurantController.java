@@ -6,6 +6,7 @@ import com.platera.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,17 +30,20 @@ public class RestaurantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public RestaurantResponse createRestaurant(@RequestBody RestaurantRequest request) {
         return restaurantService.createRestaurant(request);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public RestaurantResponse updateRestaurant(@PathVariable Long id, @RequestBody RestaurantRequest request) {
         return restaurantService.updateRestaurant(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public void deleteRestaurant(@PathVariable Long id) {
         restaurantService.deleteRestaurant(id);
     }
