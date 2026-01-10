@@ -7,6 +7,8 @@ import { RestaurantList } from "./pages/RestaurantList";
 import { CartProvider } from "./context/CartContext";
 import { RestaurantDetails } from "./pages/RestaurantDetails.tsx";
 import { MyOrders } from "./pages/MyOrders";
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { ManagerOrders } from "./pages/ManagerOrders";
 
 function App() {
   return (
@@ -20,6 +22,12 @@ function App() {
               <Route path="register" element={<Register />} />
               <Route path="restaurant/:id" element={<RestaurantDetails />} />
               <Route path="my-orders" element={<MyOrders />} />
+
+              <Route path="admin" element={<AdminDashboard />} />
+              <Route
+                path="admin/restaurant/:restaurantId"
+                element={<ManagerOrders />}
+              />
             </Route>
           </Routes>
         </BrowserRouter>
@@ -27,5 +35,4 @@ function App() {
     </AuthProvider>
   );
 }
-
 export default App;
