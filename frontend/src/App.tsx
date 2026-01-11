@@ -1,15 +1,16 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import { Layout } from "./components/Layout";
+import { RestaurantList } from "./pages/RestaurantList";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { RestaurantList } from "./pages/RestaurantList";
-import { CartProvider } from "./context/CartContext";
-import { RestaurantDetails } from "./pages/RestaurantDetails.tsx";
+import { RestaurantDetails } from "./pages/RestaurantDetails";
 import { MyOrders } from "./pages/MyOrders";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { ManagerOrders } from "./pages/ManagerOrders";
 import { ManagerTables } from "./pages/ManagerTables";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -17,27 +18,33 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<RestaurantList />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route path="restaurant/:id" element={<RestaurantDetails />} />
-              <Route path="my-orders" element={<MyOrders />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-              <Route path="admin" element={<AdminDashboard />} />
-              <Route
-                path="admin/restaurant/:restaurantId"
-                element={<ManagerOrders />}
-              />
-              <Route
-                path="admin/restaurant/:restaurantId/tables"
-                element={<ManagerTables />}
-              />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<RestaurantList />} />
+                <Route path="restaurant/:id" element={<RestaurantDetails />} />
+                <Route path="my-orders" element={<MyOrders />} />
+
+                <Route path="admin" element={<AdminDashboard />} />
+                <Route
+                  path="admin/restaurant/:restaurantId"
+                  element={<ManagerOrders />}
+                />
+                <Route
+                  path="admin/restaurant/:restaurantId/tables"
+                  element={<ManagerTables />}
+                />
+              </Route>
             </Route>
+
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>
   );
 }
+
 export default App;
