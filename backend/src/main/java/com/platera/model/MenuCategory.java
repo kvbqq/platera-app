@@ -2,10 +2,7 @@ package com.platera.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -24,8 +21,10 @@ public class MenuCategory {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     @JsonIgnore
+    @ToString.Exclude
     private Restaurant restaurant;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<MenuItem> items;
 
     @Override

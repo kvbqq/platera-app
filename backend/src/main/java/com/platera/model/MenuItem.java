@@ -2,10 +2,7 @@ package com.platera.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -27,6 +24,7 @@ public class MenuItem {
     @ManyToOne
     @JoinColumn(name = "category_id")
     @JsonIgnore
+    @ToString.Exclude
     private MenuCategory category;
 
     @Override
