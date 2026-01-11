@@ -8,6 +8,7 @@ import com.platera.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,12 +33,14 @@ public class RestaurantService {
         return restaurantMapper.toDto(restaurant);
     }
 
+    @Transactional
     public RestaurantResponse createRestaurant(RestaurantRequest request) {
         Restaurant restaurant = restaurantMapper.toEntity(request);
 
         return restaurantMapper.toDto(restaurantRepository.save(restaurant));
     }
 
+    @Transactional
     public RestaurantResponse updateRestaurant(Long id, RestaurantRequest request) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
@@ -46,6 +49,7 @@ public class RestaurantService {
         return restaurantMapper.toDto(restaurantRepository.save(restaurant));
     }
 
+    @Transactional
     public void deleteRestaurant(Long id) {
         restaurantRepository.deleteById(id);
     }

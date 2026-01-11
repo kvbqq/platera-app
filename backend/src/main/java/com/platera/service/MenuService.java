@@ -14,6 +14,7 @@ import com.platera.repository.MenuItemRepository;
 import com.platera.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class MenuService {
                 .toList();
     }
 
+    @Transactional
     public MenuCategoryResponse createMenuCategory(Long restaurantId, MenuCategoryRequest request) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
@@ -45,8 +47,7 @@ public class MenuService {
         return menuCategoryMapper.toDto(menuCategoryRepository.save(category));
     }
 
-    //todo MENU CATEGORY UPDATE
-
+    @Transactional
     public void deleteMenuCategory(Long restaurantId, Long categoryId) {
         MenuCategory category = menuCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -58,6 +59,7 @@ public class MenuService {
         menuCategoryRepository.delete(category);
     }
 
+    @Transactional
     public MenuItemResponse createMenuItem(MenuItemRequest request) {
         MenuCategory category = menuCategoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -65,8 +67,7 @@ public class MenuService {
         return menuItemMapper.toDto(menuItemRepository.save(menuItemMapper.toEntity(request)));
     }
 
-    //todo MENU ITEM UPDATE
-
+    @Transactional
     public void deleteMenuItem(Long itemId) {
         MenuItem item = menuItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));

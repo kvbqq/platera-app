@@ -1,5 +1,6 @@
 package com.platera.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class MenuItem {
     private BigDecimal price;
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonIgnore
     private MenuCategory category;
 
     @Override

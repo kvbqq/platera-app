@@ -1,5 +1,6 @@
 package com.platera.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class MenuCategory {
     private String name;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
     private Restaurant restaurant;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<MenuItem> items;

@@ -7,6 +7,7 @@ import com.platera.repository.RestaurantRepository;
 import com.platera.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class ReservationService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void createReservation(ReservationRequest request, String userEmail) {
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
