@@ -11,6 +11,7 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { ManagerOrders } from "./pages/ManagerOrders";
 import { ManagerTables } from "./pages/ManagerTables";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { ManagerMenu } from "./pages/ManagerMenu";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
                   element={<ManagerTables />}
                 />
               </Route>
+              <Route
+                path="admin/restaurant/:restaurantId/menu"
+                element={<ManagerMenu />}
+              />
             </Route>
 
             <Route path="*" element={<Navigate to="/login" replace />} />
