@@ -17,16 +17,28 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
+interface Table {
+  id: number;
+  label: string;
+  capacity?: number;
+}
+
 export const RestaurantDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart, items, total, clearCart } = useCart();
   const [searchParams] = useSearchParams();
+
   const tableIdParam = searchParams.get("tableId");
-  const tableId = tableIdParam ? Number(tableIdParam) : null;
+  const initialTableId = tableIdParam ? Number(tableIdParam) : null;
 
   const [menu, setMenu] = useState<MenuCategory[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [tables, setTables] = useState<Table[]>([]);
+  const [selectedTableId, setSelectedTableId] = useState<number | null>(
+    initialTableId
+  );
 
   useEffect(() => {
     api
@@ -41,17 +53,31 @@ export const RestaurantDetails = () => {
       });
   }, [id]);
 
+  useEffect(() => {
+    if (initialTableId) {
+      return;
+    }
+    api
+      .get(`/restaurants/${id}/tables`)
+      .then((res) => {
+        setTables(res.data);
+      })
+      .catch((err) => {
+        console.error("Błąd pobierania stolików:", err);
+      });
+  }, [id, initialTableId]);
+
   const handleOrder = async () => {
-    if (!tableId) {
+    if (!selectedTableId) {
       alert(
-        "Zamówienie musi być przypisane do stolika. Zeskanuj kod QR ze stolika."
+        "Zamówienie musi być przypisane do stolika. Wybierz stolik z listy lub zeskanuj kod QR."
       );
       return;
     }
     try {
       const orderData = {
         restaurantId: Number(id),
-        tableId: tableId,
+        tableId: selectedTableId,
         items: items.map((item) => ({
           menuItemId: item.menuItemId,
           quantity: item.quantity,
@@ -136,6 +162,32 @@ export const RestaurantDetails = () => {
             <p className="text-gray-500 text-center py-8">Koszyk jest pusty.</p>
           ) : (
             <>
+              {!initialTableId && (
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Wybierz stolik:
+                  </label>
+                  <select
+                    value={selectedTableId ?? ""}
+                    onChange={(e) =>
+                      setSelectedTableId(
+                        e.target.value ? Number(e.target.value) : null
+                      )
+                    }
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  >
+                    <option value="" disabled>
+                      -- wybierz --
+                    </option>
+                    {tables.map((table) => (
+                      <option key={table.id} value={table.id}>
+                        Stolik {table.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <ul className="divide-y divide-gray-200 mb-4">
                 {items.map((item) => (
                   <li
