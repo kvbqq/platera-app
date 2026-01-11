@@ -96,7 +96,7 @@ public class RestaurantController {
     public byte[] getTableQrCode(@PathVariable Long tableId) {
         com.platera.model.RestaurantTable table = restaurantTableRepository.findById(tableId)
                 .orElseThrow(() -> new RuntimeException("Table not found"));
-        String url = "http://localhost:5173/restaurant/" + table.getRestaurant().getId() + "?tableId=" + table.getId();
+        String url = "http://localhost:8080/restaurant/" + table.getRestaurant().getId() + "?tableId=" + table.getId();
         return qrCodeService.generateQrCode(url, 300, 300);
     }
 }

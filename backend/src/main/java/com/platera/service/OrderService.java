@@ -20,11 +20,18 @@ public class OrderService {
     private final RestaurantRepository restaurantRepository;
     private final MenuItemRepository menuItemRepository;
     private final UserRepository userRepository;
+    private final RestaurantTableRepository restaurantTableRepository;
 
     @Transactional
     public void createOrder(OrderRequest request, String userEmail) {
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        RestaurantTable table = restaurantTableRepository.findById(request.getTableId())
+                .orElseThrow(() -> new RuntimeException("Table not found"));
+        if (!table.getRestaurant().getId().equals(restaurant.getId())) {
+            throw new RuntimeException("Table does not belong to restaurant");
+        }
 
         User user = null;
         if (userEmail != null) {
@@ -33,6 +40,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .restaurant(restaurant)
+                .table(table)
                 .user(user)
                 .status(OrderStatus.NEW)
                 .items(new ArrayList<>())

@@ -1,17 +1,9 @@
 package com.platera.service;
 
-import com.platera.dto.MenuCategoryRequest;
-import com.platera.dto.MenuCategoryResponse;
-import com.platera.dto.MenuItemRequest;
-import com.platera.dto.MenuItemResponse;
-import com.platera.mapper.MenuCategoryMapper;
-import com.platera.mapper.MenuItemMapper;
-import com.platera.model.MenuCategory;
-import com.platera.model.MenuItem;
-import com.platera.model.Restaurant;
-import com.platera.repository.MenuCategoryRepository;
-import com.platera.repository.MenuItemRepository;
-import com.platera.repository.RestaurantRepository;
+import com.platera.dto.*;
+import com.platera.mapper.*;
+import com.platera.model.*;
+import com.platera.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,12 +44,12 @@ public class MenuService {
         MenuCategory category = menuCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        category.setRestaurant(null);
         menuCategoryRepository.delete(category);
     }
 
     @Transactional
     public MenuItemResponse createMenuItem(Long categoryId, MenuItemRequest request) {
+
         MenuCategory category = menuCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
@@ -66,11 +58,12 @@ public class MenuService {
 
         return menuItemMapper.toDto(menuItemRepository.save(item));
     }
+
     @Transactional
     public void deleteMenuItem(Long itemId) {
-        MenuItem item = menuItemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
-
-        menuItemRepository.delete(item);
+        if (!menuItemRepository.existsById(itemId)) {
+            throw new RuntimeException("Item not found");
+        }
+        menuItemRepository.deleteById(itemId);
     }
 }

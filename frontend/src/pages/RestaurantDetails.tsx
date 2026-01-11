@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
 import { useCart } from "../context/CartContext";
 import { ShoppingCart, PlusCircle } from "lucide-react";
@@ -21,6 +21,9 @@ export const RestaurantDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart, items, total, clearCart } = useCart();
+  const [searchParams] = useSearchParams();
+  const tableIdParam = searchParams.get("tableId");
+  const tableId = tableIdParam ? Number(tableIdParam) : null;
 
   const [menu, setMenu] = useState<MenuCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,10 +42,16 @@ export const RestaurantDetails = () => {
   }, [id]);
 
   const handleOrder = async () => {
+    if (!tableId) {
+      alert(
+        "Zamówienie musi być przypisane do stolika. Zeskanuj kod QR ze stolika."
+      );
+      return;
+    }
     try {
       const orderData = {
         restaurantId: Number(id),
-        tableId: null,
+        tableId: tableId,
         items: items.map((item) => ({
           menuItemId: item.menuItemId,
           quantity: item.quantity,
