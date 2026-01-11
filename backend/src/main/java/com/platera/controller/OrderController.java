@@ -1,7 +1,6 @@
 package com.platera.controller;
 
 import com.platera.dto.OrderRequest;
-import com.platera.dto.RestaurantStatsResponse;
 import com.platera.model.Order;
 import com.platera.model.OrderStatus;
 import com.platera.repository.OrderRepository;
@@ -48,12 +47,6 @@ public class OrderController {
     public void updateStatus(@PathVariable Long id, @RequestBody String status) {
         String cleanStatus = status.replace("\"", "");
         orderService.updateStatus(id, OrderStatus.valueOf(cleanStatus));
-    }
-
-    @GetMapping("/restaurant/{restaurantId}/stats")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public RestaurantStatsResponse getStats(@PathVariable Long restaurantId) {
-        return orderService.getStats(restaurantId);
     }
 
     @GetMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_PDF_VALUE)

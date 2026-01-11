@@ -1,7 +1,6 @@
 package com.platera.service;
 
 import com.platera.dto.OrderRequest;
-import com.platera.dto.RestaurantStatsResponse;
 import com.platera.model.*;
 import com.platera.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,19 +82,5 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setStatus(status);
         orderRepository.save(order);
-    }
-
-    public RestaurantStatsResponse getStats(Long restaurantId) {
-        BigDecimal revenue = orderRepository.countTotalRevenue(restaurantId);
-        if (revenue == null) revenue = BigDecimal.ZERO;
-
-        List<Object[]> bestSellersRaw = orderRepository.findBestSellingItems(restaurantId);
-
-        List<RestaurantStatsResponse.BestSellingItem> bestSellers = bestSellersRaw.stream()
-                .limit(5)
-                .map(obj -> new RestaurantStatsResponse.BestSellingItem((String) obj[0], (Long) obj[1]))
-                .collect(Collectors.toList());
-
-        return new RestaurantStatsResponse(revenue, bestSellers);
     }
 }

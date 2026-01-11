@@ -43,7 +43,6 @@ function App() {
                 element={<ManagerMenu />}
               />
             </Route>
-
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>

@@ -67,7 +67,6 @@ export const AdminDashboard = () => {
         </button>
       </div>
 
-      {/* FORMULARZ TWORZENIA */}
       {isCreating && (
         <div className="bg-white p-6 rounded-lg shadow-lg mb-8 border border-indigo-100 animate-fade-in">
           <h2 className="text-xl font-bold mb-4 text-indigo-800">Nowy Lokal</h2>
@@ -104,7 +103,6 @@ export const AdminDashboard = () => {
         </div>
       )}
 
-      {/* LISTA RESTAURACJI */}
       <div className="grid grid-cols-1 gap-6">
         {restaurants.map((r) => (
           <div

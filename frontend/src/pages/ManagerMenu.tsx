@@ -48,7 +48,6 @@ export const ManagerMenu = () => {
 
   const onDeleteCategory = async (id: number) => {
     if (confirm("Usunąć kategorię?")) {
-      // Use restaurantId in the path to target the correct restaurant
       await api.delete(`/restaurants/${restaurantId}/menu/categories/${id}`);
       fetchMenu();
     }
@@ -56,7 +55,6 @@ export const ManagerMenu = () => {
 
   const onAddItem = async (data: any) => {
     if (!activeCatId) return;
-    // Use restaurantId and categoryId in the path when creating an item
     await api.post(
       `/restaurants/${restaurantId}/menu/categories/${activeCatId}/items`,
       data
@@ -68,7 +66,6 @@ export const ManagerMenu = () => {
 
   const onDeleteItem = async (id: number) => {
     if (confirm("Usunąć danie?")) {
-      // Include restaurantId in the deletion path
       await api.delete(`/restaurants/${restaurantId}/menu/items/${id}`);
       fetchMenu();
     }
