@@ -9,6 +9,7 @@ import { RestaurantDetails } from "./pages/RestaurantDetails.tsx";
 import { MyOrders } from "./pages/MyOrders";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { ManagerOrders } from "./pages/ManagerOrders";
+import { ManagerTables } from "./pages/ManagerTables";
 
 function App() {
   return (
@@ -27,6 +28,10 @@ function App() {
               <Route
                 path="admin/restaurant/:restaurantId"
                 element={<ManagerOrders />}
+              />
+              <Route
+                path="admin/restaurant/:restaurantId/tables"
+                element={<ManagerTables />}
               />
             </Route>
           </Routes>

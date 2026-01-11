@@ -24,7 +24,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [restaurantId, setRestaurantId] = useState<number | null>(null);
 
   const addToCart = (newItem: CartItem, newRestaurantId: number) => {
-    // Blokada: nie można zamawiać z dwóch różnych restauracji naraz
     if (restaurantId !== null && restaurantId !== newRestaurantId) {
       if (
         !window.confirm(
