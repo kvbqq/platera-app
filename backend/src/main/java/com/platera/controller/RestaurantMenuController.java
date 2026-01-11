@@ -36,8 +36,8 @@ public class RestaurantMenuController {
 
     @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
-    public MenuItemResponse createMenuItem(@RequestBody MenuItemRequest request) {
-        return menuService.createMenuItem(request);
+    public MenuItemResponse createMenuItem(@PathVariable Long categoryId, @RequestBody MenuItemRequest request) {
+        return menuService.createMenuItem(categoryId, request);
     }
 
     @DeleteMapping("/items/{itemId}")

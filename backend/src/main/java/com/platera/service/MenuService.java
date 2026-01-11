@@ -52,21 +52,20 @@ public class MenuService {
         MenuCategory category = menuCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        if (!category.getRestaurant().getId().equals(restaurantId)) {
-            throw new RuntimeException("Category not found in this restaurant");
-        }
-
+        category.setRestaurant(null);
         menuCategoryRepository.delete(category);
     }
 
     @Transactional
-    public MenuItemResponse createMenuItem(MenuItemRequest request) {
-        MenuCategory category = menuCategoryRepository.findById(request.getCategoryId())
+    public MenuItemResponse createMenuItem(Long categoryId, MenuItemRequest request) {
+        MenuCategory category = menuCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        return menuItemMapper.toDto(menuItemRepository.save(menuItemMapper.toEntity(request)));
-    }
+        MenuItem item = menuItemMapper.toEntity(request);
+        item.setCategory(category);
 
+        return menuItemMapper.toDto(menuItemRepository.save(item));
+    }
     @Transactional
     public void deleteMenuItem(Long itemId) {
         MenuItem item = menuItemRepository.findById(itemId)
